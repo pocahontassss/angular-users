@@ -1,0 +1,13 @@
+<div class="user-card">
+    <div class="user-card__title-wrapper">
+        <p class="user-card__title">Карточка пользователя</p>
+    </div>
+    <p class="user-card__name">name: {{user.name}}</p>
+    <p class="user-card__username">login: {{user.username}}</p>
+    <p class="user-card__email">email: {{user.email}}</p>
+    <p class="user-card__phone">phone: {{user.phone}}</p>
+    <div class="user-card__buttons-wrapper">
+        <button class="user-card__buttons user-card__buttons--delete" (click)="deleteUser.emit(user.id)">delete</button>
+        <button class="user-card__buttons user-card__buttons--edit" (click)="editUser.emit(user)">edit</button>
+    </div>
+</div>

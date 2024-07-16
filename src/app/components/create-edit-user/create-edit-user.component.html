@@ -1,0 +1,35 @@
+<div class="dialog-container">
+  
+  <h2 mat-dialog-title>{{ data.isEdit ? "Изменить данные пользователя: " + data.user.name : "Создать нового пользователя" }}</h2>
+  <mat-dialog-content>
+    <form class="dialog-form" [formGroup]="form">
+      <mat-form-field appearance="fill">
+        <mat-label>Имя</mat-label>
+        <input matInput formControlName="name" placeholder="Введите Ваше имя"/>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Фамилия</mat-label>
+        <input matInput formControlName="username" placeholder="Введите Вашу фамилию"/>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Почта</mat-label>
+        <input matInput formControlName="email" placeholder="Введите Вашу почту"/>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Номер</mat-label>
+        <input matInput formControlName="phone" placeholder="Введите Ваш номер"/>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions>
+    <div class="dialog-buttons">
+      <button mat-button mat-dialog-close class="dialog-buttons__close">Закрыть</button>
+      <button mat-button (click)="submitForm()" [disabled]="form.invalid" class="dialog-buttons__create">{{ data.isEdit ? "Сохранить" : "Создать" }}</button>
+    </div>
+  </mat-dialog-actions>
+  
+</div>

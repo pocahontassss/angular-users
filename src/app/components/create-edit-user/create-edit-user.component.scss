@@ -1,0 +1,25 @@
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dialog-container {
+  min-width: 650px;
+}
+
+.dialog-buttons {
+  display: flex;
+  gap: 30px;
+
+  border-radius: 5px;
+
+  &__close {
+    border: 1px solid grey;
+    transform: translateX(15px);
+  }
+
+  &__create {
+    border: 1px solid grey;
+  }
+}
