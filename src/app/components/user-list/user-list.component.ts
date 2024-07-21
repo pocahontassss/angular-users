@@ -1,10 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { UserCardComponent } from '../user-card/user-card.component';
-import { UsersService } from '../../services/users.service';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateEditUserComponent } from '../create-edit-user/create-edit-user.component';
 import { User } from '../../interfaces/interface';
+import { userActions } from '../../+state/user.action';
+import { Store } from '@ngrx/store';
+import { selectUsers } from '../../+state/user.selector';
 
 @Component({
   selector: 'app-user-list',
@@ -13,18 +15,17 @@ import { User } from '../../interfaces/interface';
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.scss',
 })
-
 export class UserListComponent {
-  readonly usersService = inject(UsersService);
-  public readonly users$ = this.usersService.users$;
+  private readonly store = inject(Store);
   private readonly dialog = inject(MatDialog);
+  public readonly users$ = this.store.select(selectUsers);
 
   ngOnInit() {
-    this.usersService.loadUsers();
+    this.store.dispatch(userActions.loadUser());
   }
 
   deleteUser(id: number) {
-    this.usersService.deleteUser(id);
+    this.store.dispatch(userActions.deleteUser({ id }));
   }
 
   openDialog(user?: User): void {
@@ -32,19 +33,26 @@ export class UserListComponent {
     if (user) {
       isEdit = true;
     }
-    
-    const dialogRef = this.dialog.open<CreateEditUserComponent, {isEdit: boolean, user?: User}>(CreateEditUserComponent, {
-      data: { 
+
+    const dialogRef = this.dialog.open<
+      CreateEditUserComponent,
+      { isEdit: boolean; user?: User }
+    >(CreateEditUserComponent, {
+      data: {
         isEdit,
-        user: user},
+        user: user,
+      },
     });
-    
-    dialogRef.afterClosed().subscribe((result) => {
+
+    dialogRef.afterClosed().subscribe(result => {
       if (isEdit && result) {
-        this.usersService.editUser(result);
-      }
-      else if (isEdit == false && result){
-        this.usersService.addUser(result);
+        this.store.dispatch(
+          userActions.editUser({ user: { ...user, ...result } }),
+        );
+      } else if (isEdit == false && result) {
+        this.store.dispatch(
+          userActions.addUser({ user: { ...user, ...result } }),
+        );
       }
     });
   }
